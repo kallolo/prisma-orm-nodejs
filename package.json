@@ -1,0 +1,27 @@
+{
+  "name": "prisma-orm-nodejs",
+  "version": "1.0.0",
+  "description": "prisma orm nodejs",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
+  "author": "mustajib",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.22.4",
+    "@types/jest": "^29.5.2",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "prisma": "^4.15.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.15.0"
+  }
+}
