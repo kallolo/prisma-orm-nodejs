@@ -11,8 +11,9 @@ datasource db {
 }
 
 model Sample {
-  id   String @id @db.VarChar(100)
-  name String @db.VarChar(100)
+  id          String  @id @db.VarChar(100)
+  name        String  @db.VarChar(100)
+  description String? @db.Text
 
   @@map("sample") //ini nama table di database
 }
