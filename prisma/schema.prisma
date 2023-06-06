@@ -10,22 +10,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model sample {
-  id   String @id
-  name String
+model Sample {
+  id   String @id @db.VarChar(100)
+  name String @db.VarChar(100)
+
+  @@map("sample") //ini nama table di database
 }
 
-model customers {
-  id    String @id
-  name  String
-  email String @unique
-  phone String @unique
+model Customers {
+  id       String     @id @db.VarChar(100)
+  name     String     @db.VarChar(100)
+  email    String     @db.VarChar(100)
+  phone    String     @db.VarChar(100)
+  wallet   Wallet? // tanda ? menandakan bahwa belum tentu semua customer mempunyai wallet
+  comments Comments[] // tanda [] menandakan bahwa customer bisa mempunya banyak comment (array)
+  likes    Likes[]
+  loves    Products[] @relation("loves")
+
+  @@unique([email, phone])
+  @@map("customers") //ini nama table di database
 }
 
-model products {
-  id       String @id
-  name     String
-  price    Int
-  stok     Int
-  category String
+model Products {
+  id       String      @id @db.VarChar(100)
+  name     String      @db.VarChar(100)
+  price    Int         @db.Int
+  stok     Int         @db.Int
+  category String      @db.VarChar(100)
+  likedBy  Likes[]
+  lovedBy  Customers[] @relation("loves")
+
+  @@map("products") //ini nama table di database
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(100)
+
+  @@map("category") //ini nama table di database
+}
+
+model Wallet {
+  id          String    @id
+  balance     Int
+  customer    Customers @relation(fields: [customer_id], references: [id])
+  customer_id String    @unique @db.VarChar(100)
+
+  @@map("wallet") //ini nama table di database
+}
+
+model Comments {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(200)
+  description String?   @db.Text
+  customer_id String    @unique @db.VarChar(100)
+  customer    Customers @relation(fields: [customer_id], references: [id])
+
+  @@map("comments") //ini nama table di database
+}
+
+model Likes {
+  customer_id String    @db.VarChar(100)
+  product_id  String    @db.VarChar(100)
+  customer    Customers @relation(fields: [customer_id], references: [id])
+  product     Products  @relation(fields: [product_id], references: [id])
+
+  @@id([customer_id, product_id])
+  @@map("likes")
 }
